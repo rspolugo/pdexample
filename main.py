@@ -38,12 +38,40 @@ def connect(params_dic):
 
 conn = connect(param_dic)
 data = pd.read_csv(path_to_file)
-data.to_sql(data, conn, 'append')
+
+conn.autocommit = True
+cursor = conn.cursor()
+# Dropping table dataframe if exists
+cursor.execute("DROP TABLE IF EXISTS dataframe;")
+
+sql = '''CREATE TABLE dataframe(
+        id int,
+        one date, 
+        two int, 
+        three DECIMAL(2,1), 
+        four int,
+        five int,
+        six int,
+        seven DECIMAL(2,1),
+        eight                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                DECIMAL(2,1)
+        )'''
+
+# Creating a table
+cursor.execute(sql)
+print("dataframe table is created successfully...")
+
+# data = data[["id", "one", "two", "three", "four", "five", "six", "seven", "eight"]]
+# Create DataFrame
+data.to_sql('dataframe', conn, if_exists= 'replace')
+
+cursor.close()
+conn.close()
 
 
 
 
 
+# data.to_sql(data, conn, 'append')
 # ----------------------------------------------------------------------------------------
 # conn.autocommit = True
 # cursor = conn.cursor()
