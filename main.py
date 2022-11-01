@@ -49,3 +49,21 @@ if __name__ == "__main__":
     )
     end = datetime.now() - now
     print(f"Data is uploaded, time : {end.seconds} seconds.")
+
+    activity_path = Path(__file__).parent / "data" / "activity"
+    activity_files = list_all_files_in_dir(activity_path, ".gz")
+
+    activity_df = read_csv(
+        src_folder=activity_path,
+        files=activity_files,
+        headers=headers,
+        dataset_name="activity",
+    )
+
+    print("Inserting dataset into database...")
+    now = datetime.now()
+    activity_df.to_sql(
+        name="activity", con=engine, if_exists="replace",
+    )
+    end = datetime.now() - now
+    print(f"Data is uploaded, time : {end.seconds} seconds.")
