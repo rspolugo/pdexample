@@ -63,7 +63,7 @@ if __name__ == "__main__":
     print("Inserting dataset into database...")
     now = datetime.now()
     activity_df.to_sql(
-        name="activity", con=engine, if_exists="replace",
+        name="activity", con=engine, if_exists="replace", chunksize=50000
     )
     end = datetime.now() - now
     print(f"Data is uploaded, time : {end.seconds} seconds.")
